@@ -1,30 +1,58 @@
 import numpy as np
 import matplotlib.pyplot as plt
 
-x = np.loadtxt("output/sizes.txt")
-y1 = np.loadtxt("output/bubble_sort.txt")
-y2 = np.loadtxt("output/merge_sort.txt")
-y3 = np.loadtxt("output/quick_sort.txt")
 
-# Создаём 3 вертикальных подграфика
-fig, axes = plt.subplots(3, 1, figsize=(8, 10))
+def f():
+    # Загрузка данных
+    x = np.loadtxt("output/sizes.txt")
+    y1 = np.loadtxt("output/bubble_sort.txt")
+    y2 = np.loadtxt("output/merge_sort.txt")
+    y3 = np.loadtxt("output/quick_sort.txt")
 
-axes[0].plot(x, y1, "b-")
-axes[0].set_ylabel("Y1")
-axes[0].grid(True)
-axes[0].set_title("bubble_sort")
+    # Создаём один график
+    plt.figure(figsize=(10, 6))
 
-axes[1].plot(x, y2, "r--")
-axes[1].set_ylabel("Y2")
-axes[1].grid(True)
-axes[1].set_title("merge_sort")
+    # Рисуем три кривые
+    plt.plot(x, y1, "b-", label="bubble_sort")
+    plt.plot(x, y2, "r-", label="merge_sort")
+    plt.plot(x, y3, "g-", label="quick_sort")
 
-axes[2].plot(x, y3, "g-.")
-axes[2].set_xlabel("X")
-axes[2].set_ylabel("Y3")
-axes[2].grid(True)
-axes[2].set_title("quick_sort")
+    # Подписи и оформление
+    plt.xlabel("Размер массива (X)")
+    plt.ylabel("Время / Кол-во операций (Y)")
+    plt.title("Сравнение алгоритмов сортировки")
+    plt.legend()
+    plt.grid(True)
 
-plt.tight_layout()
-plt.savefig("output/result.png", dpi=300)
-print("График сохранён в output/result.png")
+    # Сохраняем график
+    plt.savefig("output/result.png", dpi=300)
+    print("График сохранён в output/result.png")
+
+
+def g():
+    # Загрузка данных
+    x = np.loadtxt("output/sizes.txt")
+    y2 = np.loadtxt("output/merge_sort.txt")
+    y3 = np.loadtxt("output/quick_sort.txt")
+
+    # Создаём один график
+    plt.figure(figsize=(10, 6))
+
+    # Рисуем три кривые
+    plt.plot(x, y2, "r-", label="merge_sort")
+    plt.plot(x, y3, "g-", label="quick_sort")
+
+    # Подписи и оформление
+    plt.xlabel("Размер массива (X)")
+    plt.ylabel("Время / Кол-во операций (Y)")
+    plt.title("Сравнение алгоритмов сортировки")
+    plt.legend()
+    plt.grid(True)
+
+    # Сохраняем график
+    plt.savefig("output/result2.png", dpi=300)
+    print("График сохранён в output/result2.png")
+
+
+f()
+g()
