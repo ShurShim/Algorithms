@@ -28,7 +28,7 @@ int main() {
     };
     int numSizes = sizeof(sizes) / sizeof(sizes[0]);
     const int NUM_REPEATS = 10000;
-    double resultArray[3][numSizes];   // теперь double и индексация по idx
+    double resultArray[3][numSizes];
 
     for (int idx = 0; idx < numSizes; idx++) {
         int n = sizes[idx];
