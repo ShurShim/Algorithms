@@ -40,8 +40,8 @@ jobs:
 
       - name: check dirs
         run: |
-          ls -la /src
-          ls -la /src/utils
+          ls -la src
+          ls -la src/utils
 
       - uses: actions/download-artifact@v4
         with:
