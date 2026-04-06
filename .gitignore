@@ -58,3 +58,6 @@ dkms.conf
 
 # Venv
 .venv*
+
+# xcode
+.DS_Store
