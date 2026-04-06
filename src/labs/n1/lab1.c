@@ -21,7 +21,10 @@ int main() {
     srand(time(NULL));
 
     int sizes[] = {
-        100, 200, 300, 400, 500
+        100, 200, 300, 400, 500,
+        600, 700, 800, 900, 1000,
+        1100, 1200, 1300, 1400, 1500,
+        1600, 1700, 1800, 1900, 2000
     };
     int numSizes = sizeof(sizes) / sizeof(sizes[0]);
     const int NUM_REPEATS = 10000;
