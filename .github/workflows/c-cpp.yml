@@ -36,6 +36,11 @@ jobs:
       - name: download python packages
         run: pip install matplotlib numpy
 
+      - name: check dirs
+        run: |
+          ls -la /src
+          ls -la /src/utils
+
       - uses: actions/download-artifact@v4
         with:
           name: build-output
