@@ -20,10 +20,10 @@ int boyerMooreSearch(const char* s, const char* sub);
 int main() {
     srand((unsigned int)time(NULL));
 
-    FILE* outBasic = fopen("output/basic_search.txt", "w");
-    FILE* outKMP = fopen("output/kmp_search.txt", "w");
-    FILE* outBM = fopen("output/boyer_moore_search.txt", "w");
-    FILE* outSizes = fopen("output/sizes.txt", "w");
+    FILE* outBasic = fopen("src/data/basic_search.txt", "w");
+    FILE* outKMP = fopen("src/data/kmp_search.txt", "w");
+    FILE* outBM = fopen("src/data/boyer_moore_search.txt", "w");
+    FILE* outSizes = fopen("src/data/sizes.txt", "w");
 
     if (outBasic == NULL || outKMP == NULL || outBM == NULL || outSizes == NULL) {
         printf("Error opening files!\n");
@@ -32,7 +32,7 @@ int main() {
 
     printf("%-15s | %-10s | %-8s | %-15s\n",
            "String Length", "Basic(ms)", "KMP(ms)", "Boyer-Moore(ms)");
-    printf("---------------|------------|----------|-----------------\n");
+    printf("----------------|------------|----------|-----------------\n");
 
     for (int size = START_SIZE; size <= END_SIZE; size += STEP) {
         double totalBasicTime = 0;
@@ -83,7 +83,7 @@ int main() {
         double avgKMP = totalKMPTime / NUM_TESTS / 1000.0;
         double avgBoyerMoore = totalBoyerMooreTime / NUM_TESTS / 1000.0;
 
-        printf("%-15d | %-10.3f | %-8.3f | %-15.3f\n",
+        printf("%-15d | %-10.5f | %-8.5f | %-15.5f\n",
                size, avgBasic, avgKMP, avgBoyerMoore);
 
         fprintf(outSizes, "%d\n", size);
@@ -97,12 +97,12 @@ int main() {
     fclose(outBM);
     fclose(outSizes);
 
-    printf("\nResults saved to output/ directory\n");
+    printf("\nResults saved to src/data/ directory\n");
     printf("Files created:\n");
-    printf("  - output/sizes.txt (x-axis data)\n");
-    printf("  - output/basic_search.txt (y1 - Basic Search)\n");
-    printf("  - output/kmp_search.txt (y2 - KMP Search)\n");
-    printf("  - output/boyer_moore_search.txt (y3 - Boyer-Moore Search)\n");
+    printf("  - src/data/sizes.txt (x-axis data)\n");
+    printf("  - src/data/basic_search.txt (y1 - Basic Search)\n");
+    printf("  - src/data/kmp_search.txt (y2 - KMP Search)\n");
+    printf("  - src/data/boyer_moore_search.txt (y3 - Boyer-Moore Search)\n");
 
     return 0;
 }

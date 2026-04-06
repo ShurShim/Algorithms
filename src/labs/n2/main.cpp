@@ -7,13 +7,13 @@
 
 using namespace std;
 
-#define ALGO_APPLIES 10000
+#define REPEAT_COUNT 10000
 
 // "Тяжелый" Brute Force - делает максимальное количество сравнений
 vector<int> full_numerate_search_all(const string& source, const string& pattern) {
     vector<int> occurrences;
     if (pattern.length() > source.length()) return occurrences;
-    
+
     for (int i = 0; i <= source.length() - pattern.length(); i++) {
         bool found = true;
         // Принудительно проверяем все символы, даже после несовпадения
@@ -58,7 +58,7 @@ vector<int> computeLPSArray(const string& pattern) {
 vector<int> kmp_search_all(const string& source, const string& pattern) {
     vector<int> occurrences;
     if (pattern.length() > source.length()) return occurrences;
-    
+
     vector<int> lps = computeLPSArray(pattern);
     int i = 0;
     int j = 0;
@@ -109,7 +109,7 @@ vector<int> z_function(const string& s) {
 vector<int> z_search_all(const string& source, const string& pattern) {
     vector<int> occurrences;
     if (pattern.length() > source.length()) return occurrences;
-    
+
     string concat = pattern + "$" + source;
     vector<int> z = z_function(concat);
 
@@ -129,12 +129,12 @@ char getRandomChar7() {
 // Генерация строки с случайными символами (без гарантированных вхождений)
 string generateString(int n, const string& key) {
     string result;
-    
+
     // Генерируем полностью случайную строку
     for (int i = 0; i < n; i++) {
         result += getRandomChar7();
     }
-    
+
     // Добавляем ключ в несколько случайных позиций
     int numKeys = max(1, n / 100); // 1% вхождений ключа
     for (int i = 0; i < numKeys; i++) {
@@ -143,7 +143,7 @@ string generateString(int n, const string& key) {
             result[pos + j] = key[j];
         }
     }
-    
+
     return result;
 }
 
@@ -151,9 +151,9 @@ string generateString(int n, const string& key) {
 void testAlgos(int n, const string& key) {
     double t1_sum = 0, t2_sum = 0, t3_sum = 0;
 
-    for (int testIteration = 0; testIteration < ALGO_APPLIES; testIteration++) {
+    for (int testIteration = 0; testIteration < REPEAT_COUNT; testIteration++) {
         string source = generateString(n, key);
-        
+
         double t1_start = clock();
         vector<int> result1 = full_numerate_search_all(source, key);
         double t1_end = clock();
@@ -173,42 +173,42 @@ void testAlgos(int n, const string& key) {
     double t1_sec = t1_sum / CLOCKS_PER_SEC;
     double t2_sec = t2_sum / CLOCKS_PER_SEC;
     double t3_sec = t3_sum / CLOCKS_PER_SEC;
-    
-    cout << "| " << setw(10) << n 
-         << " | " << setw(15) << fixed << setprecision(6) << t1_sec 
-         << " | " << setw(15) << t2_sec 
+
+    cout << "| " << setw(10) << n
+         << " | " << setw(15) << fixed << setprecision(6) << t1_sec
+         << " | " << setw(15) << t2_sec
          << " | " << setw(15) << t3_sec << " |" << endl;
 }
 
 int main() {
     srand(time(0));
-    
+
     string key = "abcdefghijklm"; // 13 букв
-    
+
     cout << "=========================================================================" << endl;
     cout << "String Search Algorithms Performance Test" << endl;
     cout << "=========================================================================" << endl;
     cout << "Alphabet: 7 letters (a-g)" << endl;
     cout << "Search key: \"" << key << "\" (13 letters)" << endl;
     cout << "String structure: random string with ~1% key occurrences" << endl;
-    cout << "Iterations per size: " << ALGO_APPLIES << endl;
+    cout << "Iterations per size: " << REPEAT_COUNT << endl;
     cout << "=========================================================================" << endl;
-    
-    cout << "|" << setw(12) << "n (length)" 
-         << " | " << setw(15) << "Brute Force (s)" 
-         << " | " << setw(15) << "KMP (s)" 
+
+    cout << "|" << setw(12) << "n (length)"
+         << " | " << setw(15) << "Brute Force (s)"
+         << " | " << setw(15) << "KMP (s)"
          << " | " << setw(15) << "Z-function (s)" << " |" << endl;
     cout << "|------------|-----------------|-----------------|-----------------|" << endl;
-    
-    vector<int> testSizes = {1100, 1200, 1300, 1400, 1500, 1600, 1700, 1800, 1900, 
+
+    vector<int> testSizes = {1100, 1200, 1300, 1400, 1500, 1600, 1700, 1800, 1900,
                              2000, 2100, 2200, 2300, 2400, 2500, 2600, 2700, 2800, 2900, 3000};
-    
+
     for (int n : testSizes) {
         testAlgos(n, key);
     }
-    
+
     cout << "=========================================================================" << endl;
-    cout << "Results show total time for " << ALGO_APPLIES << " iterations" << endl;
+    cout << "Results show total time for " << REPEAT_COUNT << " iterations" << endl;
     cout << "=========================================================================" << endl;
 
     return 0;
