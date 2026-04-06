@@ -4,7 +4,7 @@ lr1: n1/lab1.c
 	./n1/lab1.exe
 
 lr2: n2/lab2.c
-	gcc n2/lab2.c -o n2/lab2.exe -lm
+	gcc n2/lab2.c -o n2/lab2.exe
 	./n2/lab2.exe
 
 venv:

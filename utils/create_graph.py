@@ -1,13 +1,9 @@
-import numpy as np
 import matplotlib.pyplot as plt
 
 
 def f():
     # Загрузка данных
-    x = np.loadtxt("output/sizes.txt")
-    y1 = np.loadtxt("output/bubble_sort.txt")
-    y2 = np.loadtxt("output/merge_sort.txt")
-    y3 = np.loadtxt("output/quick_sort.txt")
+    x = read_data("output/sizes.txt")
 
     # Создаём один график
     plt.figure(figsize=(10, 6))
@@ -19,7 +15,7 @@ def f():
 
     # Подписи и оформление
     plt.xlabel("Размер массива (X)")
-    plt.ylabel("Время / Кол-во операций (Y)")
+    plt.ylabel("Время (Y)")
     plt.title("Сравнение алгоритмов сортировки")
     plt.legend()
     plt.grid(True)
@@ -31,9 +27,9 @@ def f():
 
 def g():
     # Загрузка данных
-    x = np.loadtxt("output/sizes.txt")
-    y2 = np.loadtxt("output/merge_sort.txt")
-    y3 = np.loadtxt("output/quick_sort.txt")
+    x = read_data("output/sizes.txt")
+    y2 = read_data("output/merge_sort.txt")
+    y3 = read_data("output/quick_sort.txt")
 
     # Создаём один график
     plt.figure(figsize=(10, 6))
@@ -44,7 +40,7 @@ def g():
 
     # Подписи и оформление
     plt.xlabel("Размер массива (X)")
-    plt.ylabel("Время / Кол-во операций (Y)")
+    plt.ylabel("Время(Y)")
     plt.title("Сравнение алгоритмов сортировки")
     plt.legend()
     plt.grid(True)

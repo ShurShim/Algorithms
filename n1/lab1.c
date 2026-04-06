@@ -11,12 +11,7 @@ void copyArray(int source[], int dest[], int n);
 void saveIntArrayToFile(int arr[], int size, const char *filename);
 void saveDoubleArrayToFile(double arr[], int size, const char *filename);
 
-// Лабораторная работа №1: Методы сортировки
-// Вариант 21: Шейкерная сортировка
 int main() {
-    #ifdef _WIN32
-        system("chcp 1251 > nul");
-    #endif
 
     srand(time(NULL));
 
