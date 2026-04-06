@@ -2,17 +2,25 @@ name: C/C++ CI
 
 on:
   push:
-    branches: [ "main" ]
+    branches: ["main"]
 
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v4
-    
-    - name: make lr1
-      run: make lr1
-      
-    - name: make clean
-      run: make clean
+      - uses: actions/checkout@v4
 
+      - name: make lr1
+        run: |
+          echo "--- build ---"
+          make build_lr1
+          echo "--- run ---"
+
+      - name: run lr1
+        run: |
+          echo "--- start ---"
+          ./src/labs/n1/lab1.exe
+          echo "--- finish ---"
+
+      - name: make clean
+        run: make clean
