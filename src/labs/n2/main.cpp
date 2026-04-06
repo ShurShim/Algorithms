@@ -4,12 +4,14 @@
 #include <ctime>
 #include <fstream>
 #include <iomanip>
+#include <cstdlib>
+#include <cstring>
 
 using namespace std;
 
 #define REPEAT_COUNT 10000
 
-// "Тяжелый" Brute Force - делает максимальное количество сравнений
+// "Тяжелый" Basic Search - делает максимальное количество сравнений
 vector<int> full_numerate_search_all(const string& source, const string& pattern) {
     vector<int> occurrences;
     if (pattern.length() > source.length()) return occurrences;
@@ -85,39 +87,55 @@ vector<int> kmp_search_all(const string& source, const string& pattern) {
     return occurrences;
 }
 
-// Алгоритм Z-функции
-vector<int> z_function(const string& s) {
-    int n = s.length();
-    vector<int> z(n);
-    int l = 0, r = 0;
+// Boyer-Moore алгоритм (хеш плохого символа)
+int* computeBadCharHeuristic(const string& sub, int m) {
+    int* badChar = (int*)malloc(256 * sizeof(int));
+    if (badChar == NULL) return NULL;
 
-    for (int i = 1; i < n; i++) {
-        if (i <= r) {
-            z[i] = min(r - i + 1, z[i - l]);
-        }
-        while (i + z[i] < n && s[z[i]] == s[i + z[i]]) {
-            z[i]++;
-        }
-        if (i + z[i] - 1 > r) {
-            l = i;
-            r = i + z[i] - 1;
-        }
+    for (int i = 0; i < 256; i++) {
+        badChar[i] = -1;
     }
-    return z;
+
+    for (int i = 0; i < m; i++) {
+        badChar[(unsigned char)sub[i]] = i;
+    }
+
+    return badChar;
 }
 
-vector<int> z_search_all(const string& source, const string& pattern) {
+// Поиск всех вхождений (а не первого)
+vector<int> boyer_moore_search_all(const string& source, const string& pattern) {
     vector<int> occurrences;
-    if (pattern.length() > source.length()) return occurrences;
+    int n = source.length();
+    int m = pattern.length();
 
-    string concat = pattern + "$" + source;
-    vector<int> z = z_function(concat);
+    if (m == 0) return occurrences;
+    if (n < m) return occurrences;
 
-    for (int i = pattern.length() + 1; i < z.size(); i++) {
-        if (z[i] == pattern.length()) {
-            occurrences.push_back(i - (pattern.length() + 1));
+    int* badChar = computeBadCharHeuristic(pattern, m);
+    if (badChar == NULL) return occurrences;
+
+    int shift = 0;
+
+    while (shift <= n - m) {
+        int j = m - 1;
+
+        while (j >= 0 && pattern[j] == source[shift + j]) {
+            j--;
+        }
+
+        if (j < 0) {
+            occurrences.push_back(shift);
+            // Сдвигаемся на 1 (или можно использовать правило хорошего суффикса)
+            shift++;
+        } else {
+            int move = j - badChar[(unsigned char)source[shift + j]];
+            if (move < 1) move = 1;
+            shift += move;
         }
     }
+
+    free(badChar);
     return occurrences;
 }
 
@@ -147,41 +165,91 @@ string generateString(int n, const string& key) {
     return result;
 }
 
-// Функция тестирования
-void testAlgos(int n, const string& key) {
+// Функция тестирования с сохранением в файлы
+void testAlgosWithFileOutput(int n, const string& key,
+                             ofstream& outSizes,
+                             ofstream& outBasic,
+                             ofstream& outKMP,
+                             ofstream& outBM) {
     double t1_sum = 0, t2_sum = 0, t3_sum = 0;
+    long long t1_count = 0, t2_count = 0, t3_count = 0;
 
     for (int testIteration = 0; testIteration < REPEAT_COUNT; testIteration++) {
         string source = generateString(n, key);
 
-        double t1_start = clock();
+        clock_t start, end;
+
+        // Basic Search
+        start = clock();
         vector<int> result1 = full_numerate_search_all(source, key);
-        double t1_end = clock();
-        t1_sum += (t1_end - t1_start);
+        end = clock();
+        if (start != (clock_t)-1 && end != (clock_t)-1) {
+            t1_sum += (end - start);
+            t1_count++;
+        }
 
-        double t2_start = clock();
+        // KMP
+        start = clock();
         vector<int> result2 = kmp_search_all(source, key);
-        double t2_end = clock();
-        t2_sum += (t2_end - t2_start);
+        end = clock();
+        if (start != (clock_t)-1 && end != (clock_t)-1) {
+            t2_sum += (end - start);
+            t2_count++;
+        }
 
-        double t3_start = clock();
-        vector<int> result3 = z_search_all(source, key);
-        double t3_end = clock();
-        t3_sum += (t3_end - t3_start);
+        // Boyer-Moore
+        start = clock();
+        vector<int> result3 = boyer_moore_search_all(source, key);
+        end = clock();
+        if (start != (clock_t)-1 && end != (clock_t)-1) {
+            t3_sum += (end - start);
+            t3_count++;
+        }
+
+        // Проверка корректности (каждые 100 итераций)
+        if (testIteration % 100 == 0 && (result1.size() != result2.size() || result1.size() != result3.size())) {
+            cout << "Warning: Mismatch in occurrences count at n=" << n
+                 << " (BF:" << result1.size()
+                 << ", KMP:" << result2.size()
+                 << ", BM:" << result3.size() << ")" << endl;
+        }
     }
 
-    double t1_sec = t1_sum / CLOCKS_PER_SEC;
-    double t2_sec = t2_sum / CLOCKS_PER_SEC;
-    double t3_sec = t3_sum / CLOCKS_PER_SEC;
+    // Вычисляем среднее время в миллисекундах
+    double t1_sec = (t1_sum / CLOCKS_PER_SEC) * 1000.0 / t1_count;
+    double t2_sec = (t2_sum / CLOCKS_PER_SEC) * 1000.0 / t2_count;
+    double t3_sec = (t3_sum / CLOCKS_PER_SEC) * 1000.0 / t3_count;
 
+    // Выводим в консоль
     cout << "| " << setw(10) << n
          << " | " << setw(15) << fixed << setprecision(6) << t1_sec
          << " | " << setw(15) << t2_sec
          << " | " << setw(15) << t3_sec << " |" << endl;
+
+    // Сохраняем в файлы
+    outSizes << n << "\n";
+    outBasic << t1_sec << "\n";
+    outKMP << t2_sec << "\n";
+    outBM << t3_sec << "\n";
 }
 
 int main() {
     srand(time(0));
+
+    // Создаем директорию для данных (если её нет)
+    system("mkdir -p src/data");
+
+    // Открываем файлы для записи
+    ofstream outSizes("src/data/sizes.txt");
+    ofstream outBasic("src/data/basic_search.txt");
+    ofstream outKMP("src/data/kmp.txt");
+    ofstream outBM("src/data/boyer_moore.txt");
+
+    if (!outSizes.is_open() || !outBasic.is_open() || !outKMP.is_open() || !outBM.is_open()) {
+        cout << "Error opening files for writing!" << endl;
+        cout << "Make sure directory 'src/data' exists" << endl;
+        return 1;
+    }
 
     string key = "abcdefghijklm"; // 13 букв
 
@@ -195,21 +263,40 @@ int main() {
     cout << "=========================================================================" << endl;
 
     cout << "|" << setw(12) << "n (length)"
-         << " | " << setw(15) << "Brute Force (s)"
-         << " | " << setw(15) << "KMP (s)"
-         << " | " << setw(15) << "Z-function (s)" << " |" << endl;
+         << " | " << setw(15) << "Basic Search (ms)"
+         << " | " << setw(15) << "KMP (ms)"
+         << " | " << setw(15) << "Boyer-Moore (ms)" << " |" << endl;
     cout << "|------------|-----------------|-----------------|-----------------|" << endl;
 
-    vector<int> testSizes = {1100, 1200, 1300, 1400, 1500, 1600, 1700, 1800, 1900,
-                             2000, 2100, 2200, 2300, 2400, 2500, 2600, 2700, 2800, 2900, 3000};
+    vector<int> testSizes = {
+    100, 200, 300, 400, 500,
+    600, 700, 800, 900, 1000,
+    1100, 1200, 1300, 1400, 1500,
+    1600, 1700, 1800, 1900, 2000,
+    2100, 2200, 2300, 2400, 2500,
+    2600, 2700, 2800, 2900, 3000
+    };
 
     for (int n : testSizes) {
-        testAlgos(n, key);
+        testAlgosWithFileOutput(n, key, outSizes, outBasic, outKMP, outBM);
     }
 
     cout << "=========================================================================" << endl;
-    cout << "Results show total time for " << REPEAT_COUNT << " iterations" << endl;
+    cout << "Results show average time per search in milliseconds" << endl;
     cout << "=========================================================================" << endl;
+
+    // Закрываем файлы
+    outSizes.close();
+    outBasic.close();
+    outKMP.close();
+    outBM.close();
+
+    cout << "\n✓ Results saved to src/data/ directory" << endl;
+    cout << "Files created:" << endl;
+    cout << "  - src/data/sizes.txt (x-axis: string lengths)" << endl;
+    cout << "  - src/data/brute_force.txt (y1: Basic Search times)" << endl;
+    cout << "  - src/data/kmp.txt (y2: KMP times)" << endl;
+    cout << "  - src/data/boyer_moore.txt (y3: Boyer-Moore times)" << endl;
 
     return 0;
 }

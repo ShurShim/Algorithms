@@ -10,8 +10,19 @@ lr2: src/labs/n2/lab2.c
 lr2_cpp: src/labs/n2/main.cpp
 	g++ src/labs/n2/main.cpp -o src/labs/n2/main.exe
 	./src/labs/n2/main.exe
-venv:
-	python
+	make graph ARGS="none"
 
-clean:
+graph:
+	python3 ./src/utils/create.py $$ARGS
+
+clean: clean_exe clean_png clean_txt
+	@echo "cleaned"
+
+clean_exe:
 	rm -rfv *.exe
+
+clean_txt:
+	rm -rfv ./src/data/*.txt
+
+clean_png:
+	rm -rfv ./src/data/graphs/*.png
