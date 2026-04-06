@@ -4,10 +4,10 @@ import matplotlib.pyplot as plt
 
 def f():
     # Загрузка данных
-    x = np.loadtxt("output/sizes.txt")
-    y1 = np.loadtxt("output/bubble_sort.txt")
-    y2 = np.loadtxt("output/merge_sort.txt")
-    y3 = np.loadtxt("output/quick_sort.txt")
+    x = np.loadtxt("src/data/raw/sizes.txt")
+    y1 = np.loadtxt("src/data/raw/bubble_sort.txt")
+    y2 = np.loadtxt("src/data/raw/merge_sort.txt")
+    y3 = np.loadtxt("src/data/raw/quick_sort.txt")
 
     # Создаём один график
     plt.figure(figsize=(10, 6))
@@ -25,15 +25,15 @@ def f():
     plt.grid(True)
 
     # Сохраняем график
-    plt.savefig("output/result.png", dpi=300)
-    print("График сохранён в output/result.png")
+    plt.savefig("src/data/result.png", dpi=300)
+    print("График сохранён в src/data/result.png")
 
 
 def g():
     # Загрузка данных
-    x = np.loadtxt("output/sizes.txt")
-    y2 = np.loadtxt("output/merge_sort.txt")
-    y3 = np.loadtxt("output/quick_sort.txt")
+    x = np.loadtxt("src/data/raw/sizes.txt")
+    y2 = np.loadtxt("src/data/raw/merge_sort.txt")
+    y3 = np.loadtxt("src/data/raw/quick_sort.txt")
 
     # Создаём один график
     plt.figure(figsize=(10, 6))
@@ -50,8 +50,8 @@ def g():
     plt.grid(True)
 
     # Сохраняем график
-    plt.savefig("output/result2.png", dpi=300)
-    print("График сохранён в output/result2.png")
+    plt.savefig("src/data/result2.png", dpi=300)
+    print("График сохранён в src/data/result2.png")
 
 
 f()

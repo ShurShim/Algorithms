@@ -24,3 +24,24 @@ jobs:
 
       - name: make clean
         run: make clean
+      - uses: actions/upload-artifact@v4
+        with:
+          name: build-output
+          path: src/data/raw/
+
+  create_graph:
+    runs-on: ubuntu-latest
+    steps:
+      - name: download python packages
+        run: pip install matplotlib numpy
+
+      - uses: actions/download-artifact@v4
+        with:
+          name: build-output
+          path: src/data/raw/
+      - run: python3 src/utils/create_graph.py
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: graphs
+          path: src/data/
