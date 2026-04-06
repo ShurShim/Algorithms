@@ -166,11 +166,7 @@ string generateString(int n, const string& key) {
 }
 
 // Функция тестирования с сохранением в файлы
-void testAlgosWithFileOutput(int n, const string& key,
-                             ofstream& outSizes,
-                             ofstream& outBasic,
-                             ofstream& outKMP,
-                             ofstream& outBM) {
+void testAlgosWithFileOutput(int n, const string& key, ofstream& outSizes, ofstream& outBasic, ofstream& outKMP, ofstream& outBM) {
     double t1_sum = 0, t2_sum = 0, t3_sum = 0;
     long long t1_count = 0, t2_count = 0, t3_count = 0;
 
@@ -262,8 +258,8 @@ int main() {
     cout << "Iterations per size: " << REPEAT_COUNT << endl;
     cout << "=========================================================================" << endl;
 
-    cout << "|" << setw(12) << "n (length)"
-         << " | " << setw(15) << "Basic Search (ms)"
+    cout << "|" << setw(11) << "n (length)"
+         << " | " << setw(13) << "Basic Search (ms)"
          << " | " << setw(15) << "KMP (ms)"
          << " | " << setw(15) << "Boyer-Moore (ms)" << " |" << endl;
     cout << "|------------|-----------------|-----------------|-----------------|" << endl;
