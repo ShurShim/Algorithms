@@ -1,7 +1,8 @@
 .PHONY: venv clean
-lr1: n1/lab1.c
-	gcc n1/lab1.c -o n1/lab1.exe
-	./n1/lab1.exe
+
+lr1: src/labs/n1/lab1.c
+	gcc src/labs/n1/lab1.c -o src/labs/n1/lab1.exe
+	./src/labs/n1/lab1.exe
 
 lr2: n2/lab2.c
 	gcc n2/lab2.c -o n2/lab2.exe -lm
