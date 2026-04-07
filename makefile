@@ -1,14 +1,26 @@
 .PHONY: venv clean
-lr1: n1/lab1.c
-	gcc n1/lab1.c -o n1/lab1.exe
-	./n1/lab1.exe
 
-lr2: n2/lab2.c
-	gcc n2/lab2.c -o n2/lab2.exe
-	./n2/lab2.exe
+lr1: src/labs/n1/lab1.c
+	gcc src/labs/n1/lab1.c -o src/labs/n1/lab1.exe
+	./src/labs/n1/lab1.exe
+	make graph ARGS="none"
 
-venv:
-	python
+lr2: src/labs/n2/lab2.cpp
+	g++ src/labs/n2/lab2.cpp -o src/labs/n2/lab2.exe
+	./src/labs/n2/lab2.exe
+	make graph ARGS="none"
 
-clean:
-	rm -rfv *.exe
+graph:
+	python3 ./src/utils/create.py $$ARGS
+
+clean: clean_exe clean_png clean_txt
+	@echo "cleaned"
+
+clean_exe:
+	find . -name "*.exe" -type f -delete
+
+clean_txt:
+	rm -rfv ./src/data/*.txt
+
+clean_png:
+	rm -rfv ./src/data/graphs/*.png

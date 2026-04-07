@@ -55,6 +55,14 @@ dkms.conf
 *.dwo
 
 # Results
+*.png
+src/data/*.txt
 
 # Venv
 .venv*
+
+# pyton
+__pycache__
+
+# MacOS
+.DS_Store

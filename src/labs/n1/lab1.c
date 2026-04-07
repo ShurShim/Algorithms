@@ -83,10 +83,10 @@ int main() {
     }
 
     // Сохраняем результаты в файлы
-    saveIntArrayToFile(sizes, numSizes, "output/sizes.txt");
-    saveDoubleArrayToFile(resultArray[0], numSizes, "output/bubble_sort.txt");
-    saveDoubleArrayToFile(resultArray[1], numSizes, "output/merge_sort.txt");
-    saveDoubleArrayToFile(resultArray[2], numSizes, "output/quick_sort.txt");
+    saveIntArrayToFile(sizes, numSizes, "src/data/sizes.txt");
+    saveDoubleArrayToFile(resultArray[0], numSizes, "src/data/bubble_sort.txt");
+    saveDoubleArrayToFile(resultArray[1], numSizes, "src/data/merge_sort.txt");
+    saveDoubleArrayToFile(resultArray[2], numSizes, "src/data/quick_sort.txt");
 
     return 0;
 }
