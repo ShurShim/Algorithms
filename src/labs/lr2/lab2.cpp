@@ -254,7 +254,6 @@ int main() {
     cout << "=========================================================================" << endl;
     cout << "Alphabet: 7 letters (a-g)" << endl;
     cout << "Search key: \"" << key << "\" (13 letters)" << endl;
-    cout << "String structure: random string with ~1% key occurrences" << endl;
     cout << "Iterations per size: " << REPEAT_COUNT << endl;
     cout << "=========================================================================" << endl;
 

@@ -24,9 +24,9 @@ jobs:
 
       - name: make and run lr
         run: |
-          echo "--- start ---"
+          @echo "--- start ---"
           make ${{ env.LAB_WORK_NUMBER }}
-          echo "--- finish ---"
+          @echo "--- finish ---"
           date +"%Y-%m-%d %H:%M:%S" > ${{ env.ARTIFACT_PATH }}data.md
 
       - uses: actions/upload-artifact@v5

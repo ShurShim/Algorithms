@@ -10,15 +10,15 @@ class Drawer:
         self.data_y: dict[str, list[float]] = results[1]
 
     def create_plot(self, x_label: str, y_label: str, output_file: str):
-        try:
-            analyze_differences(
-                self.data_x["x"],
-                bf_times=np.array(self.data_y["basic_search.txt"]),
-                bm_times=np.array(self.data_y["boyer_moore.txt"]),
-                kmp_times=np.array(self.data_y["kmp.txt"]),
-            )
-        except Exception:
-            print("⚠️ Skip analyze...")
+        # try:
+        #     analyze_differences(
+        #         self.data_x["x"],
+        #         bf_times=np.array(self.data_y["basic_search.txt"]),
+        #         bm_times=np.array(self.data_y["boyer_moore.txt"]),
+        #         kmp_times=np.array(self.data_y["kmp.txt"]),
+        #     )
+        # except Exception:
+        #     print("⚠️ Skip analyze...")
         plt.figure(figsize=(10, 6))
         for y_key in self.data_y:
             plt.plot(self.data_x["x"], self.data_y[y_key], label=y_key)
@@ -39,9 +39,8 @@ class Drawer:
         plt.ylabel(y_label)
         plt.legend()
         plt.grid(True)
-        filename2 = output_file.replace("1.png", "2.png", 1)
-        plt.savefig(filename2, dpi=300)
-        print(f"📁 График сохранён в {filename2}")
+        plt.savefig(output_file, dpi=300)
+        print(f"📁 График сохранён в {output_file}")
 
 
 def read_data_from_dir(files_dir: Path) -> list[dict[str, list[float]]]:
