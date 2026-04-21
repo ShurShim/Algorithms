@@ -3,8 +3,8 @@ name: Graph Creating
 on:
   workflow_dispatch:
     inputs:
-      env:
-        LAB_WORK_NUMBER: "Какая лабораторная(lr1, lr2)"
+      LAB_WORK_NUMBER:
+        description: "Какая лабораторная (lr1, lr2)"
         required: true
         default: "n"
         type: choice
@@ -24,9 +24,10 @@ jobs:
 
       - name: make and run lr
         run: |
-          @echo "--- start ---"
-          make ${{ env.LAB_WORK_NUMBER }}
-          @echo "--- finish ---"
+          echo "--- start ---"
+          make ${{ inputs.LAB_WORK_NUMBER }}
+          echo "--- finish ---"
+          mkdir -p ${{ env.ARTIFACT_PATH }}
           date +"%Y-%m-%d %H:%M:%S" > ${{ env.ARTIFACT_PATH }}data.md
 
       - uses: actions/upload-artifact@v5
@@ -47,9 +48,11 @@ jobs:
         with:
           name: make-output
           path: ${{ env.ARTIFACT_PATH }}
+
       - run: |
+          mkdir -p ${{ env.ARTIFACT_PATH }}/graphs
           python3 src/utils/create.py
-          date +"%Y-%m-%d %H:%M:%S" > ${{ env.ARTIFACT_PATH }}raw/data.md
+          date +"%Y-%m-%d %H:%M:%S" > ${{ env.ARTIFACT_PATH }}/raw/data.md
 
       - uses: actions/upload-artifact@v5
         with:
