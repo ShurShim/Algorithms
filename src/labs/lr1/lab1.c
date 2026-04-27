@@ -11,12 +11,7 @@ void copyArray(int source[], int dest[], int n);
 void saveIntArrayToFile(int arr[], int size, const char *filename);
 void saveDoubleArrayToFile(double arr[], int size, const char *filename);
 
-// Лабораторная работа №1: Методы сортировки
-// Вариант 21: Шейкерная сортировка
 int main() {
-    #ifdef _WIN32
-        system("chcp 1251 > nul");
-    #endif
 
     srand(time(NULL));
 
@@ -28,7 +23,7 @@ int main() {
     };
     int numSizes = sizeof(sizes) / sizeof(sizes[0]);
     const int NUM_REPEATS = 10000;
-    double resultArray[3][numSizes];   // теперь double и индексация по idx
+    double resultArray[3][numSizes];
 
     for (int idx = 0; idx < numSizes; idx++) {
         int n = sizes[idx];
@@ -88,10 +83,10 @@ int main() {
     }
 
     // Сохраняем результаты в файлы
-    saveIntArrayToFile(sizes, numSizes, "output/sizes.txt");
-    saveDoubleArrayToFile(resultArray[0], numSizes, "output/bubble_sort.txt");
-    saveDoubleArrayToFile(resultArray[1], numSizes, "output/merge_sort.txt");
-    saveDoubleArrayToFile(resultArray[2], numSizes, "output/quick_sort.txt");
+    saveIntArrayToFile(sizes, numSizes, "src/data/sizes.txt");
+    saveDoubleArrayToFile(resultArray[0], numSizes, "src/data/bubble_sort.txt");
+    saveDoubleArrayToFile(resultArray[1], numSizes, "src/data/merge_sort.txt");
+    saveDoubleArrayToFile(resultArray[2], numSizes, "src/data/quick_sort.txt");
 
     return 0;
 }
