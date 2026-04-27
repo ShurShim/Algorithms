@@ -1,7 +1,0 @@
-name: cicd process in non-main branch
-
-on:
-  push:
-    branches-ignore:
-      - main
-      - lab*
