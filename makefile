@@ -8,8 +8,16 @@ lr2: src/labs/lr2/lab2.cpp
 	g++ src/labs/lr2/lab2.cpp -o src/labs/lr2/lab.exe
 	./src/labs/lr2/lab.exe
 
+lr3: src/labs/lr3/lab3.cpp
+	g++ src/labs/lr3/lab3.cpp -o src/labs/lr3/lab.exe
+	./src/labs/lr3/lab.exe
+
+lr4: src/labs/lr4/lab4.cpp
+	g++ src/labs/lr4/lab4.cpp -o src/labs/lr4/lab.exe
+	./src/labs/lr4/lab.exe
+
 graph:
-	python3 ./src/utils/create.py $$ARGS
+	.venv/bin/python ./src/utils/create.py $$ARGS
 
 clean: clean_exe clean_png clean_txt
 	@echo "cleaned"
@@ -21,4 +29,4 @@ clean_txt:
 	rm -rfv ./src/data/*.txt
 
 clean_png:
-	rm -rfv ./src/data/graphs/*.png
+	rm -rfv ./src/data/*.png

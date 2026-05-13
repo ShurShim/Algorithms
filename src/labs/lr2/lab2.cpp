@@ -22,7 +22,6 @@ vector<int> full_numerate_search_all(const string& source, const string& pattern
         for (int j = 0; j < pattern.length(); j++) {
             if (source[i + j] != pattern[j]) {
                 found = false;
-                // НЕ делаем break, продолжаем проверку (замедляет)
             }
         }
         if (found) {
@@ -103,7 +102,7 @@ int* computeBadCharHeuristic(const string& sub, int m) {
     return badChar;
 }
 
-// Поиск всех вхождений (а не первого)
+// Поиск всех вхождений
 vector<int> boyer_moore_search_all(const string& source, const string& pattern) {
     vector<int> occurrences;
     int n = source.length();
@@ -126,7 +125,6 @@ vector<int> boyer_moore_search_all(const string& source, const string& pattern) 
 
         if (j < 0) {
             occurrences.push_back(shift);
-            // Сдвигаемся на 1 (или можно использовать правило хорошего суффикса)
             shift++;
         } else {
             int move = j - badChar[(unsigned char)source[shift + j]];
